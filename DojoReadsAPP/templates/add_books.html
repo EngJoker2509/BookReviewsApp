@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap_min.css' %}">
+    <title>Document</title>
+</head>
+<style>
+    .welcome{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+<body>
+    <div class="welcome">
+        <h1 class="font-weight-normal font-italic">Welcome , {{request.session.username}}</h1>
+        <div class="above_link">
+            <a href="{% url 'DojoReadsApp:books' %}" class="btn">Home</a>
+            <a href="{% url 'DojoReadsApp:destroy' %}" class="btn">Log Out</a>
+        </div>
+    </div>
+    <hr class="badge-dark">
+    <div class="container">
+            <div class="addBookForm">
+                <h1 class="font-weight-normal font-italic" >Add a New Book Title and a Review</h1>
+                <form action="{% url 'DojoReadsApp:add_books' %}" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="disabledTextInput" class="font-weight-normal font-italic">Book Title :-</label>
+                            <input type="text" name="book_title" class="form-control border-dark" placeholder="Title">
+                        </div>
+                        <div class="form-group">
+                            <label for="disabledTextInput" class="font-weight-normal font-italic">Author :-</label>
+                            <select name="author_from_database" class="border-dark">
+                                <option></option>
+                                {% for author in authors %}
+                                <option>{{author.author_name}}</option>
+                                {% endfor %}
+                            </select><br>
+                            Or add a new author:
+                            <input type="text" name="author_from_user" class="form-control border-dark" placeholder="Author">
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="disabledTextInput" class="font-weight-normal font-italic">Review :-</label>
+                            <textarea name="review" class="form-control border-dark" placeholder="Description"></textarea>
+                        </div>
+                     
+                        <br>
+                        <div class="form-group">
+                            <label for="disabledTextInput" class="font-weight-normal font-italic">Rating :-</label>
+                            <select name="rating" class="border-dark">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>  stars.
+                        </div>
+                        <input type="hidden" name="user_id_who_add" value="{{ request.session.userid }}">
+                        <button type="submit" class="btn btn-primary">Add Back and Review</button>
+                    </fieldset>
+                </form>
+            </div>  
+    </div>
+</body>
+</html>

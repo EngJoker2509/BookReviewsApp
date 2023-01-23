@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap_min.css' %}">
+    <title>User Reviws</title>
+</head>
+<style>
+    .welcome{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+<body>
+    <div class="welcome">
+        <h1>Welcome , {{request.session.username}}</h1>
+        <div class="above_link">
+            <a href="{% url 'DojoReadsApp:books' %}" class="btn">Home</a>
+            <a href="{% url 'DojoReadsApp:destroy' %}" class="btn">LogOut</a>
+        </div>
+    </div>
+
+    <hr>
+<div class="ml-5 mt-5">
+    <h1 class="font-weight-normal font-italic">Alias :- {{ info_user.alias }}</h1>
+    <h1 class="font-weight-normal font-italic">Name :- {{ info_user.first_name }}</h1>
+    <h1 class="font-weight-normal font-italic">Email :- {{info_user.email }}</h1>
+    <h1 class="font-weight-normal font-italic">Total Reviews :- {{ total_reviews }} </h1>
+</div>
+
+<div class="ml-5 mt-5">
+    <h2 class="font-weight-normal font-italic">Posted Reviews on the Following books :- </h2>
+    <ul>
+        {% for i in reviwed_by_user %}
+        <li><a href="#">{{ i.review_book.book_title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>

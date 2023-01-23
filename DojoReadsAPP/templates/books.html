@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap_min.css' %}">
+    <title>Document</title>
+</head>
+<style>
+    .container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .welcome {
+        width: 800;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+
+    .welcome .above_link {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 10px;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    hr {
+        width: 400px;
+        background-color: black;
+        margin: 0px;
+    }
+
+    .container form {
+        margin-top: 50px;
+        margin-left: -130px;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .container h1 {
+        margin-left: 0px;
+    }
+
+    .error_message {
+        color: red;
+    }
+
+    .all_books h1 {
+        margin-left: 0px;
+    }
+
+    .all_books a {
+        margin-left: 130px;
+    }
+
+    .all_books_reviews {
+        width: 500px;
+        height: 100px;
+    }
+
+    .books_link {
+        width: 400px;
+        height: 100px;
+        border: 1px solid black;
+        overflow: scroll;
+        overflow-x: auto;
+    }
+
+    .book_info .yellow_star {
+        background-color: yellow;
+    }
+
+    .book_info .grey_star {
+        background-color: none;
+    }
+</style>
+
+<body>
+    <div class="welcome mb-5">
+        <div>
+            <h1>Welcome,{{ request.session.username }}</h1>
+        </div>
+        <div>
+            <div>
+            <a href="{% url 'DojoReadsApp:add_books' %}" class="btn">Add book and review</a>
+        </div>
+        <div>
+            <a href="{% url 'DojoReadsApp:destroy' %}" class="btn">Log Out</a>
+        </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div>
+            <h1 class="font-weight-bold font-italic border-dark">Recent Book Reviews :</h1>
+            {% for book in books %}
+            <h4 class="font-weight-bold font-italic border-dark"><a
+                    href="{% url 'DojoReadsApp:Book_det' book.id %}">{{ book.book_title }}</a></h4>
+            <div class="ml-3">
+                {% for comment in last_comment %}
+                {% if book.id == comment.review_book.id %}
+                <h6 class="font-weight-bold font-italic border-dark" >Rating :- {% if comment.rating %} {{ comment.rating }} {% else %} No One Rated {% endif %} </h6>
+                <h6 class="font-weight-bold font-italic border-dark"> <a href="#">{{comment.review_user.first_name}}</a> says :- {{ comment.review }}</h6>
+                <h6 class="font-weight-bold font-italic border-dark"> Posted on :- {{ comment.create_at }}</h6>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <hr>
+                {% endfor %}
+        </div>
+        <div class="all_books_reviews">
+            <h2 class="font-weight-bold font-italic">Other Books with Reviews :</h2>
+            <div class="books_link border-dark">
+                {% for book in Allbooks %}
+                <a href="{% url 'DojoReadsApp:Book_det' book.id %}" class="ml-2">{{book.book_title}}</a><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
